@@ -5,8 +5,9 @@ metadata:
 data:
   NODE_ENV: "production"
   PORT: "3000"
-  POSTGRES_USER: "playsafe"
-  POSTGRES_PASSWORD: "admin"
-  POSTGRES_DB: "playsafe_db"
-  DATABASE_URL: "postgres://playsafe:playsafe@postgres:5432/playsafe_db"
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_USER: "postgres"
+  DB_PASSWORD: "admin"
+  DB_NAME: "daycare_db"
   JWT_SECRET: "super_secret_jwt"

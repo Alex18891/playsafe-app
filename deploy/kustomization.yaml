@@ -1,6 +1,0 @@
-resources:
-  - configmap.yaml
-  - playsafe-api-deployment.yaml
-  - playsafe-api-service.yaml
-  - postgres-statefulset.yaml
-  - postgres-service.yaml

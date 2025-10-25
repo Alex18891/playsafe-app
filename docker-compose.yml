@@ -10,11 +10,11 @@ services:
     ports:
       - "5432:5432"
     volumes:
-       - pgdata:/var/lib/postgresql/data
-       - ./db-init:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d
 
   app:
-    build: .
+    image: anasilva2696/playsafe-svc:latest
     container_name: daycare-app
     depends_on:
       - db
@@ -22,7 +22,9 @@ services:
       - .env
     ports:
       - "3000:3000"
-    command: ["node", "src/app.js"]
+    environment:
+      # Override DATABASE_URL if needed, pointing to the db container
+      DATABASE_URL: postgres://postgres:admin@db:5432/daycare_db
 
 volumes:
   pgdata:
