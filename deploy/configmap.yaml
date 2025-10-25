@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: playsafe-config
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  POSTGRES_USER: "playsafe"
+  POSTGRES_PASSWORD: "admin"
+  POSTGRES_DB: "playsafe_db"
+  DATABASE_URL: "postgres://playsafe:playsafe@postgres:5432/playsafe_db"
+  JWT_SECRET: "super_secret_jwt"

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playsafe-api
+  labels:
+    app: playsafe-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: playsafe-api
+  template:
+    metadata:
+      labels:
+        app: playsafe-api
+    spec:
+      containers:
+        - name: playsafe-api
+          image: anasilva2696/playsafe-svc:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PGHOST
+              value: playsafe-db
+            - name: PGUSER
+              value: postgres
+            - name: PGPASSWORD
+              value: postgres
+            - name: PGDATABASE
+              value: playsafe
+            - name: PGPORT
+              value: "5432"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: playsafe-api
+spec:
+  selector:
+    app: playsafe-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
