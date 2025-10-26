@@ -1,9 +1,37 @@
 const express = require("express");
 const { swaggerUi, swaggerSpec, PORT } = require("./swagger_options");
 const pool = require("./db");
+const { setupMetrics, counters } = require("./metrics");
 
 const app = express();
 app.use(express.json());
+
+setupMetrics(app); // configura métricas
+
+app.get('/health', async (req, res) => {
+  res.status(200).json({ status: "UP" });
+});
+
+/**
+ * @swagger
+ * /api/health:
+ *   get:
+ *     tags: [Observability]
+ *     summary: Health check
+ *     description: Verifica o estado da API.
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: UP
+ */
+
 
 // rota principal
 app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
