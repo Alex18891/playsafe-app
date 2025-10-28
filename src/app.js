@@ -4,9 +4,11 @@ const pool = require("./db");
 const { setupMetrics, counters } = require("./metrics");
 
 const app = express();
+
+
 app.use(express.json());
 
-setupMetrics(app); // configura métricas
+setupMetrics(app, '/metrics'); // configura métricas
 
 app.get('/health', async (req, res) => {
   res.status(200).json({ status: "UP" });
@@ -35,6 +37,13 @@ app.get('/health', async (req, res) => {
 
 // rota principal
 app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.get('/burn', (req,res)=>{
+  const ms = Number(req.query.ms||300);
+  const end = Date.now() + ms;
+  while (Date.now() < end) { Math.sqrt(Math.random()); }
+  res.json({ ok:true, burned_ms: ms });
+});
 
 //DAYCARE ENDPOINTS
 /**

@@ -25,24 +25,27 @@ services:
     environment:
       # Override DATABASE_URL if needed, pointing to the db container
       DATABASE_URL: postgres://postgres:admin@db:5432/daycare_db
-  prometheus:
-    image: prom/prometheus:latest
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    ports:
-      - "9090:9090"
-    depends_on:
-      - app
+  #prometheus:
+  #    image: prom/prometheus:v2.55.1
+   #   container_name: playsafe-app-prometheus
+    #  command:
+     #   - --config.file=/etc/prometheus/prometheus.yml
+    #  volumes:
+    #    - ./deploy/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+   #   ports:
+    #    - "9090:9090"
+    #  depends_on:
+#        - app
 
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3001:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    depends_on:
-      - prometheus
+  #grafana:
+   # image: grafana/grafana:latest
+    #ports:
+     # - "3001:3000"
+   # environment:
+    #  - GF_SECURITY_ADMIN_USER=admin
+     # - GF_SECURITY_ADMIN_PASSWORD=admin
+   # depends_on:
+    #  - prometheus
 
 volumes:
   pgdata:

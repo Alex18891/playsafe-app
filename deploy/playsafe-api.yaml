@@ -1,49 +1,56 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: playsafe-api
+ name: playsafe-api
 spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: playsafe-api
-  template:
-    metadata:
-      labels:
-        app: playsafe-api
-    spec:
-      initContainers:
-        - name: wait-for-postgres
-          image: busybox
-          command:
-            - sh
-            - -c
-            - |
-              until nc -z $DB_HOST $DB_PORT; do
-                echo "Waiting for postgres..."
-                sleep 2
-              done
-          envFrom:
-            - configMapRef:
-                name: playsafe-config
-      containers:
-        - name: playsafe-api
-          image: anasilva2696/playsafe-svc:latest
-          ports:
-            - containerPort: 3000
-          envFrom:
-            - configMapRef:
-                name: playsafe-config
+ replicas: 2
+ selector:
+  matchLabels:
+   app: playsafe-api
+ template:
+  metadata:
+   labels:
+    app: playsafe-api
+  spec:
+   initContainers:
+    - name: wait-for-postgres
+      image: busybox
+      command:
+       - sh
+       - -c
+       - |
+        until nc -z $DB_HOST $DB_PORT; do
+          echo "Waiting for postgres..."
+          sleep 2
+        done
+      envFrom:
+       - configMapRef:
+          name: playsafe-config
+   containers:
+    - name: playsafe-api
+      image: anasilva2696/playsafe-svc:latest
+      ports:
+       - containerPort: 3000
+      envFrom:
+       - configMapRef:
+          name: playsafe-config
+      resources:
+       requests:
+        memory: "128Mi"
+        cpu: "10m"
+       limits:
+        memory: "256Mi"
+        cpu: "200m"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: playsafe-api
+ name: playsafe-api
 spec:
-  selector:
-    app: playsafe-api
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
-  type: LoadBalancer
+ selector:
+  app: playsafe-api
+ ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+ type: ClusterIP

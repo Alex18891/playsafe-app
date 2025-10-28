@@ -32,10 +32,7 @@ function setupMetrics(app) {
     res.end(await register.metrics());
   });
 
-  app.get('/api/metrics', async (_req, res) => {
-    res.set('Content-Type', register.contentType);
-    res.end(await register.metrics());
-  });
+ 
 }
 
 module.exports = { setupMetrics, register };
